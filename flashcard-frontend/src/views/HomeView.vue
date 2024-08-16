@@ -1,9 +1,12 @@
 <script setup>
 
+
+
   async function startFlashcards(e) {
     e.preventDefault();
+    const dateLimit = Date.now();
     const numWords = document.querySelector('input[name="num words"]:checked').value;
-    const response = await fetch(`http://localhost:3000/api/v1?num_words=${numWords}`);
+    const response = await fetch(`http://localhost:3000/api/v1?num_words=${numWords}&date_limit=${dateLimit}`);
     const words = await response.json();
     console.log(words);
     // router.push({ name: 'Flashcards', params: { words } });

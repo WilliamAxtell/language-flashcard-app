@@ -21,10 +21,12 @@ app.get('/', (req, res)=>{
 
 app.get('/api/v1', (req, res)=>{
     const wordsToFetch = req.query.num_words;
-    res.set('conetent-type', 'application/json');
+    const dateLimit = req.query.date_limit;
+    res.set('content-type', 'application/json');
     
     const sql = `
         SELECT * FROM words
+        WHERE next_fetch <= ${dateLimit}
         LIMIT ${wordsToFetch}
         `;
 
