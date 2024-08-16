@@ -1,9 +1,30 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+
+  async function startFlashcards(e) {
+    e.preventDefault();
+    const numWords = document.querySelector('input[name="num words"]:checked').value;
+    const response = await fetch(`http://localhost:3000/api/v1?num_words=${numWords}`);
+    const words = await response.json();
+    console.log(words);
+    // router.push({ name: 'Flashcards', params: { words } });
+  }
+
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <h2>Pick how many words you would like to revise and start!</h2>
+  <form>
+    <input type="radio" id="10" name="num words" value="10" checked="checked">
+    <label for="10">10</label><br>
+
+    <input type="radio" id="25" name="num words" value="25">
+    <label for="25">25</label><br>
+
+    <input type="radio" id="50" name="num words" value="50">
+    <label for="50">50</label><br>
+
+    <input type="radio" id="100" name="num words" value="100">
+    <label for="100">100</label><br><br>
+    <button type="submit" @click="startFlashcards">Start</button>
+  </form> 
 </template>

@@ -2,25 +2,40 @@ import {db} from './connect.js';
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+
+
+const corsOptions = {
+    origin: '*',
+    methods: ['POST', 'GET', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 app.get('/', (req, res)=>{
     res.status(200).send('Hei, dere!');
 });
 
 app.get('/api/v1', (req, res)=>{
+    const wordsToFetch = req.query.num_words;
     res.set('conetent-type', 'application/json');
-    const sql = 'SELECT * FROM words';
-    let data = {enemies: []};
+    
+    const sql = `
+        SELECT * FROM words
+        LIMIT ${wordsToFetch}
+        `;
+
+    let data = [];
     try {
         db.all(sql, [], (err, rows)=>{
             if(err){
                 throw err;
             }
             rows.forEach((row)=>{
-                data.enemies.push({
+                data.push({
                     id: row.id,
                     word: row.word,
                     meaning: row.meaning,
