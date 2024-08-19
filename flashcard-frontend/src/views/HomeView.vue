@@ -1,6 +1,18 @@
 <script setup>
+  import { useRouter, useRoute } from 'vue-router'
+  import { wordStore } from '../../stores/words.js'
+
+  const store = wordStore()
+
+  const sharedData = store.sharedData
+
+  const updateData = () => {
+    store.setSharedData('New Value')
+  }
 
 
+  const router = useRouter()
+  const route = useRoute()
 
   async function startFlashcards(e) {
     e.preventDefault();
@@ -9,7 +21,8 @@
     const response = await fetch(`http://localhost:3000/api/v1?num_words=${numWords}&date_limit=${dateLimit}`);
     const words = await response.json();
     console.log(words);
-    // router.push({ name: 'Flashcards', params: { words } });
+    store.setSharedData(JSON.stringify(words));
+    router.push({name: 'flashcards'});
   }
 
 </script>
