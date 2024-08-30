@@ -28,19 +28,38 @@
 </script>
 
 <template>
-  <h2>Pick how many words you would like to revise and start!</h2>
-  <form>
-    <input type="radio" id="10" name="num words" value="10" checked="checked">
-    <label for="10">10</label><br>
-
-    <input type="radio" id="25" name="num words" value="25">
-    <label for="25">25</label><br>
-
-    <input type="radio" id="50" name="num words" value="50">
-    <label for="50">50</label><br>
-
-    <input type="radio" id="100" name="num words" value="100">
-    <label for="100">100</label><br><br>
-    <button type="submit" @click="startFlashcards">Start</button>
-  </form> 
+  <div class="home-form">
+    <form>
+      <h2>Pick how many words you would like to revise and start!</h2>
+      <input type="radio" id="10" name="num words" value="10" checked="checked">
+      <label for="10">10</label><br>
+      
+      <input type="radio" id="25" name="num words" value="25">
+      <label for="25">25</label><br>
+      
+      <input type="radio" id="50" name="num words" value="50">
+      <label for="50">50</label><br>
+      
+      <input type="radio" id="100" name="num words" value="100">
+      <label for="100">100</label><br><br>
+      <button type="submit" @click="startFlashcards">Start</button>
+    </form> 
+  </div>
 </template>
+
+<style scoped>
+  .home-form {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+
+  form {
+    margin: 1rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem 0;
+  }
+</style>
