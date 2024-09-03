@@ -23,11 +23,23 @@
   onMounted(() => {
     setWord();
     totalWords = sharedData.length;
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        if (buttonOption.value === 1) {
+          checkAnswer(event);
+        } else if (buttonOption.value === 2) {
+          setWord();
+        } else if (buttonOption.value === 3) {
+          backHome();
+        }
+      }
+    });
   })
 
   const setWord = () =>{
     buttonOption.value = 1;
     formShow.value = true;
+    document.getElementById('card-answer').value = '';
     randomNum = Math.floor(Math.random() * sharedData.length);
     workingWords.value = sharedData[randomNum];
     cardDisplay.value = workingWords.value.word;
@@ -43,40 +55,47 @@
     warning.value = false;
     const answer = workingWords.value.meaning;
     const transRegex = new RegExp(document.getElementById('card-answer').value, 'i');
-
-    if(transRegex.test(answer)) {
-      cardDisplay.value = `Correct Answer: ${workingWords.value.meaning}`;
-      score++;
-    } else {
-      cardDisplay.value = `Incorrect Answer: ${workingWords.value.meaning}`;
-    }
+    answerParser(transRegex.test(answer), sharedData[randomNum]);
     
     sharedData.splice(randomNum, 1);
     if (sharedData.length === 0) {
       cardDisplay.value = `You have completed all the words! Your score is ${score}/${totalWords}`;
       buttonOption.value = 3;
-    } else {
-      randomNum = Math.floor(Math.random() * sharedData.length);
-      workingWords.value = sharedData[randomNum];
     }
-
-    document.getElementById('card-answer').value = '';
+    
   }
 
+  const answerParser = (bool, word) => {
+    word.correct = bool;
+    if(bool) {
+      cardDisplay.value = `Correct Answer: ${workingWords.value.meaning}`;
+      score++;
+    } else {
+      cardDisplay.value = `Incorrect Answer: ${workingWords.value.meaning}`;
+    }
+    fetch(`http://localhost:3000/api/v1`, {
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          method: 'PATCH',
+          body: JSON.stringify(word)
+      }).then((response) => response.json());
+  }
+  
   const backHome = () => {
     router.push({name: 'home'});
   }
-
+  
 </script>
 
 <template>
     <div class="card">
       <h1>{{ cardDisplay }}</h1>
       <p v-if="warning" class="card-warning">Please enter the answer below</p>
-      <input v-if="formShow" type="text" id="card-answer"/>
+      <input v-show="formShow" type="text" id="card-answer" />
       <button v-if="buttonOption === 1" @click="checkAnswer">Check Answer</button>
-      <button v-if="buttonOption === 2" @click="setWord">Next Word</button>
-      <button v-if="buttonOption === 3" @click="backHome">Back To Start</button>
+      <button v-else-if="buttonOption === 2" @click="setWord">Next Word</button>
+      <button v-else-if="buttonOption === 3" @click="backHome">Back To Start</button>
     </div>
 </template>
 

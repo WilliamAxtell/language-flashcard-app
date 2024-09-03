@@ -78,6 +78,16 @@ app.post('/api/v1', (req, res)=>{
     }
 });
 
+app.patch('/api/v1', (req, res)=>{
+    console.log(req.body);
+    res.set('conetent-type', 'application/json');
+    const responseObject = {
+        message: "Word updated",
+        success: true
+    };
+    res.send(JSON.stringify(responseObject));
+});
+
 app.delete('/api/v1', (req, res)=>{
     res.set('conetent-type', 'application/json');
     const sql = 'DELETE FROM words WHERE id = ?';
