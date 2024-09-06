@@ -1,7 +1,7 @@
 import express from 'express';
-import { getWordsSelection } from '../controllers/words.js';
+import { getWordsSelection, processAnswers } from '../controllers/words.js';
 const router = express.Router();
 
-router.route('/').get(getWordsSelection);
+router.route('/').get(getWordsSelection).patch(processAnswers);
 
 export {router};

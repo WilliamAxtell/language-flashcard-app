@@ -36,6 +36,16 @@ const getWordsSelection = async (req, res)=>{
     }
 };
 
+const processAnswers = async (req, res)=>{
+    console.log(req.body);
+    res.set('conetent-type', 'application/json');
+    const responseObject = {
+        message: "Word updated",
+        success: true
+    };
+    res.send(JSON.stringify(responseObject));
+};
+
 // app.post('/api/v1', (req, res)=>{
 //     res.set('conetent-type', 'application/json');
 //     const sql = 'INSERT INTO words(word, meaning, fetch_pause_length, next_fetch) VALUES(?, ?, ?, ?)';
@@ -57,16 +67,6 @@ const getWordsSelection = async (req, res)=>{
 //         res.status(468);
 //         res.send(`{"code": 468, "status": "${err.message}"}`);
 //     }
-// });
-
-// app.patch('/api/v1', (req, res)=>{
-//     console.log(req.body);
-//     res.set('conetent-type', 'application/json');
-//     const responseObject = {
-//         message: "Word updated",
-//         success: true
-//     };
-//     res.send(JSON.stringify(responseObject));
 // });
 
 // app.delete('/api/v1', (req, res)=>{
@@ -93,4 +93,4 @@ const getWordsSelection = async (req, res)=>{
 
 // });
 
-export {getWordsSelection};
+export {getWordsSelection, processAnswers};
