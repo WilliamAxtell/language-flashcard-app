@@ -1,14 +1,15 @@
 import {db} from '../connect.js';
 
+
 const getWordsSelection = async (req, res)=>{
     const wordsToFetch = req.query.num_words;
     const dateLimit = req.query.date_limit;
     res.set('content-type', 'application/json');
     
     const sql = `
-        SELECT * FROM words
-        WHERE next_fetch <= ${dateLimit}
-        LIMIT ${wordsToFetch}
+    SELECT * FROM words
+    WHERE next_fetch <= ${dateLimit}
+    LIMIT ${wordsToFetch}
         `;
 
     let data = [];
@@ -37,13 +38,54 @@ const getWordsSelection = async (req, res)=>{
 };
 
 const processAnswers = async (req, res)=>{
-    console.log(req.body);
-    res.set('conetent-type', 'application/json');
-    const responseObject = {
-        message: "Word updated",
-        success: true
-    };
-    res.send(JSON.stringify(responseObject));
+    try {
+        const updateWord = req.body;
+        const fetchBase = Date.now();
+        const pauseDict = {
+            0: 86400000,
+            1: 604800000,
+            2: 1382400000,
+            3: 3024000000,
+        };
+
+        if (!updateWord.correct) {
+            updateWord.next_fetch = fetchBase + 86400000;
+            if (updateWord.fetch_pause_length > 0) {
+                updateWord.fetch_pause_length--;
+            }
+        } else {
+            updateWord.next_fetch = fetchBase + pauseDict[updateWord.fetch_pause_length];
+            if (updateWord.fetch_pause_length < 3) {
+                updateWord.fetch_pause_length++
+            };
+        }
+
+        const sql = `
+            UPDATE words
+            SET fetch_pause_length = ?,
+                next_fetch = ?
+            WHERE id = ?
+            `;
+
+        db.run(sql, [updateWord.fetch_pause_length, updateWord.next_fetch, updateWord.id], function(err){
+            if(err){
+                throw err;
+            }
+            res.status(201);
+            let data = {
+                status: 201,
+                message: `Word with id ${updateWord.id} updated`,
+                fetch_pause_length: updateWord.fetch_pause_length,
+                next_fetch: updateWord.next_fetch
+            };
+            res.send(JSON.stringify(data));
+        });
+
+    } catch (error) {
+        console.log(err.message);
+        res.status(468);
+        res.send(`{"code": 468, "status": "${err.message}"}`);        
+    }
 };
 
 // app.post('/api/v1', (req, res)=>{
