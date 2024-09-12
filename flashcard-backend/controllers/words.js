@@ -55,7 +55,7 @@ const processAnswers = async (req, res)=>{
             }
         } else {
             updateWord.next_fetch = fetchBase + pauseDict[updateWord.fetch_pause_length];
-            if (updateWord.fetch_pause_length < 3) {
+            if (updateWord.fetch_pause_length < 4) {
                 updateWord.fetch_pause_length++
             };
         }
@@ -111,28 +111,28 @@ const processAnswers = async (req, res)=>{
 //     }
 // });
 
-// app.delete('/api/v1', (req, res)=>{
-//     res.set('conetent-type', 'application/json');
-//     const sql = 'DELETE FROM words WHERE id = ?';
-//     try {
-//         db.run(sql, [req.query.id], function(err){
-//             if (err){
-//                 throw err;
-//             }
-//             if (this.changes === 1) {
-//                 res.status(200);
-//                 res.send(`{"code": 200, "status": "Word deleted"}`);
-//             } else {
-//                 res.status(404);
-//                 res.send(`{"code": 404, "status": "Word not found"}`);
-//             }
-//         })
-//     } catch(err) {
-//         console.log(err.message);
-//         res.status(469);
-//         res.send(`{"code": 469, "status": "${err.message}"}`);
-//     }
+const deleteWord = async (req, res)=>{
+    res.set('conetent-type', 'application/json');
+    const sql = 'DELETE FROM words WHERE id = ?';
+    try {
+        db.run(sql, [req.body.id], function(err){
+            if (err){
+                throw err;
+            }
+            if (this.changes === 1) {
+                res.status(200);
+                res.send(`{"code": 200, "status": "Word deleted"}`);
+            } else {
+                res.status(404);
+                res.send(`{"code": 404, "status": "Word not found"}`);
+            }
+        })
+    } catch(err) {
+        console.log(err.message);
+        res.status(469);
+        res.send(`{"code": 469, "status": "${err.message}"}`);
+    }
 
-// });
+};
 
-export {getWordsSelection, processAnswers};
+export {getWordsSelection, processAnswers, deleteWord};

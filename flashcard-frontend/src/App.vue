@@ -1,10 +1,16 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
+
+const router = useRouter();
+
+const goHome = () => {
+  router.push({name: 'home'});
+};
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/Flag_of_Norway.png" width="154" height="112" />
+    <img @click="goHome" alt="Vue logo" class="logo" src="@/assets/Flag_of_Norway.png" width="154" height="112" />
   </header>
 
   <RouterView />
@@ -19,6 +25,7 @@ header {
 .logo {
   display: block;
   margin: 0 10% 2rem 10%;
+  cursor: pointer;
 }
 
 </style>

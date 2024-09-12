@@ -73,13 +73,26 @@
     } else {
       cardDisplay.value = `Incorrect Answer: ${workingWords.value.meaning}`;
     }
-    fetch(`http://localhost:3000/api/v1`, {
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          method: 'PATCH',
-          body: JSON.stringify(word)
-      }).then((response) => response.json());
+
+    if (word.correct === true && word.fetch_pause_length > 3) {
+      fetch(`http://localhost:3000/api/v1`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE',
+            body: JSON.stringify(word)
+        }).then((response) => response.json()
+      );
+    } else {
+      fetch(`http://localhost:3000/api/v1`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            body: JSON.stringify(word)
+        }).then((response) => response.json()
+      );
+    }
   }
   
   const backHome = () => {
