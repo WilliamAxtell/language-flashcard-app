@@ -65,7 +65,7 @@
     
   }
 
-  const answerParser = (bool, word) => {
+  const answerParser = async (bool, word) => {
     word.correct = bool;
     if(bool) {
       cardDisplay.value = `Correct Answer: ${workingWords.value.meaning}`;
@@ -75,7 +75,7 @@
     }
 
     if (word.correct === true && word.fetch_pause_length > 3) {
-      fetch(`http://localhost:3000/api/v1`, {
+      await fetch(`http://localhost:3000/api/v1`, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -84,7 +84,7 @@
         }).then((response) => response.json()
       );
     } else {
-      fetch(`http://localhost:3000/api/v1`, {
+      await fetch(`http://localhost:3000/api/v1`, {
             headers: {
                 'Content-Type': 'application/json'
             },
