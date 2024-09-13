@@ -1,5 +1,25 @@
 import sqlite3 from 'sqlite3';
 import seedWords from './seed-pack.js';
+import fs from 'fs';
+import path from 'path';
+
+const filePath = path.join(__dirname, 'norskord.db');
+
+(function checkAndCreateFile(filePath) {
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      // If it doesn't exist, create the file with optional content
+      fs.writeFileSync(filePath, (err) => {
+        if (err) {
+          console.error("Error creating file:", err);
+          return;
+        }
+      });
+      console.log(`File created: ${filePath}`);
+    } else {
+      console.log(`File already exists: ${filePath}`);
+    }
+})();
 
 const sql3 = sqlite3.verbose();
 const db = new sql3.Database('./norskord.db', sqlite3.OPEN_READWRITE, connected);
