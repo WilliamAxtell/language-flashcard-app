@@ -10,9 +10,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
+      path: '/word-form',
+      name: 'word-form',
+      component: () => import('../views/WordForm.vue')
     },
     {
       path: '/flashcards',

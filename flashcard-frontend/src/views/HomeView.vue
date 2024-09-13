@@ -48,13 +48,6 @@
 </template>
 
 <style scoped>
-  .home-form {
-    width: 80%;
-    margin: 0 auto;
-    border: 1px solid black;
-    border-radius: 5px;
-  }
-
   form {
     margin: 1rem;
   }
