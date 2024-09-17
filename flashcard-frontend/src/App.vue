@@ -15,8 +15,11 @@ const addWord = () => {
 
 <template>
   <header>
-    <img @click="goHome" alt="Vue logo" class="logo" src="@/assets/Flag_of_Norway.png" width="154" height="112" />
-    <button @click="addWord">Add a Word</button>
+    <img @click="goHome" class="logo" src="@/assets/Flag_of_Norway.png" />
+    <div class="button-block">
+      <button @click="goHome">Back Home</button>
+      <button @click="addWord">Add a Word</button>
+    </div>
   </header>
 
   <RouterView />
@@ -35,6 +38,14 @@ header {
 .logo {
   display: block;
   cursor: pointer;
+  max-width: 154px;
+  aspect-ratio: 11 / 8;
+}
+
+.button-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 </style>
