@@ -88,31 +88,29 @@ const processAnswers = async (req, res)=>{
     }
 };
 
-// app.post('/api/v1', (req, res)=>{
-//     res.set('conetent-type', 'application/json');
-//     const sql = 'INSERT INTO words(word, meaning, fetch_pause_length, next_fetch) VALUES(?, ?, ?, ?)';
-//     let newId;
-//     let nextFetch = Date.now();
-//     try{
-//         db.run(sql, [req.body.word, req.body.meaning, req.body.part_of_speech, req.body.word_category, 0, nextFetch], function(err){
-//             if(err){
-//                 throw err;
-//             }
-//             newId = this.lastID;
-//             res.status(201);
-//             let data = {status: 201, message: `Word added with id ${newId}`};
-//             let content = JSON.stringify(data);
-//             res.send(content);
-//         })  
-//     } catch (err) {
-//         console.log(err.message);
-//         res.status(468);
-//         res.send(`{"code": 468, "status": "${err.message}"}`);
-//     }
-// });
+const addWord = async (req, res)=>{
+    const newWord = req.body;
+    res.set('content-type', 'application/json');
+    const sql = 'INSERT INTO words(word, meaning, fetch_pause_length, next_fetch) VALUES(?, ?, ?, ?)';
+    const nextFetch = Date.now();
+    try{
+        db.run(sql, [newWord[0], newWord[1], 0, nextFetch], function(err){
+            if(err){
+                throw err;
+            }
+            res.status(201);
+            let data = {"word": newWord[0], "meaning": newWord[1], "fetch_pause_length": 0, "next_fetch": next_fetch};
+            res.send(JSON.stringify({status: 201, message: data}));
+        })  
+    } catch (err) {
+        console.log(err.message);
+        res.status(468);
+        res.send(`{"code": 468, "status": "${err.message}"}`);
+    }
+};
 
 const deleteWord = async (req, res)=>{
-    res.set('conetent-type', 'application/json');
+    res.set('content-type', 'application/json');
     const sql = 'DELETE FROM words WHERE id = ?';
     try {
         db.run(sql, [req.body.id], function(err){
@@ -135,4 +133,4 @@ const deleteWord = async (req, res)=>{
 
 };
 
-export {getWordsSelection, processAnswers, deleteWord};
+export {getWordsSelection, processAnswers, addWord, deleteWord};
