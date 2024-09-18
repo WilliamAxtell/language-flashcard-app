@@ -17,8 +17,8 @@ const addWord = () => {
   <header>
     <img @click="goHome" class="logo" src="@/assets/Flag_of_Norway.png" />
     <div class="button-block">
-      <button @click="goHome">Back Home</button>
-      <button @click="addWord">Add a Word</button>
+      <button class="nav-btn" @click="goHome">Back Home</button>
+      <button class="nav-btn" @click="addWord">Add a Word</button>
     </div>
   </header>
 
@@ -48,4 +48,8 @@ header {
   gap: 1rem;
 }
 
+.nav-btn {
+  min-width: 120px;
+  cursor: pointer;
+}
 </style>
