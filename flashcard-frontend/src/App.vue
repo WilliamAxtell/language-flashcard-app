@@ -26,14 +26,6 @@ const addWord = () => {
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 10% 2rem 10%;
-}
 
 .logo {
   display: block;
@@ -51,5 +43,15 @@ header {
 .nav-btn {
   min-width: 120px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 400px) {
+  header {
+    flex-direction: column;
+  }
+  
+  .button-block {
+    flex-direction: row;
+  }
 }
 </style>

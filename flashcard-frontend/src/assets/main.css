@@ -15,8 +15,29 @@ button {
 }
 
 .home-form {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+header {
+  width: 90%;
+  line-height: 1.5;
+  max-height: 100vh;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 2rem auto;
+}
+
+@media screen and (max-width: 400px) {
+  header {
+    flex-direction: column;
+  }
+  
+  .button-block {
+    flex-direction: row;
+  }
 }

@@ -127,7 +127,7 @@
     flex-direction: column; 
     gap: 1rem;
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
     border: 1px solid black;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
