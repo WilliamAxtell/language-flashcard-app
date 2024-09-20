@@ -115,7 +115,7 @@ const createWord = async (e) => {
         </label>
       </div>
 
-      <button type="submit" @click="createWord" class="standard-margin">Start</button>
+      <button type="submit" @click="createWord" class="standard-margin">Add Word</button>
     </form> 
   </div>
 </template>

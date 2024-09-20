@@ -94,13 +94,14 @@ const addWord = async (req, res)=>{
     const sql = 'INSERT INTO words(word, meaning, fetch_pause_length, next_fetch) VALUES(?, ?, ?, ?)';
     const nextFetch = Date.now();
     try{
-        db.run(sql, [newWord[0], newWord[1], 0, nextFetch], function(err){
+        db.run(sql, [newWord[0], newWord[1], 0, nextFetch], async function(err){
             if(err){
                 throw err;
             }
             res.status(201);
-            let data = {"word": newWord[0], "meaning": newWord[1], "fetch_pause_length": 0, "next_fetch": next_fetch};
-            res.send(JSON.stringify({status: 201, message: data}));
+            const addWordRes = await checkAddition();
+            console.log(addWordRes);
+            res.send(JSON.stringify({status: 201, message: addWordRes}));
         })  
     } catch (err) {
         console.log(err.message);
@@ -131,6 +132,33 @@ const deleteWord = async (req, res)=>{
         res.send(`{"code": 469, "status": "${err.message}"}`);
     }
 
+};
+
+const checkAddition = async ()=>{
+    return new Promise((resolve, reject) => {
+    const lastFiveWordsSQL = `
+            SELECT * FROM words
+            ORDER BY id DESC
+            LIMIT 5
+            `;
+
+    let lastFive = [];
+    db.all(lastFiveWordsSQL, [], (err, rows)=>{
+        if(err){
+            reject(err);
+        }
+        rows.forEach((row) => {
+            lastFive.push({
+                id: row.id,
+                word: row.word,
+                meaning: row.meaning,
+                fetch_pause_length: row.fetch_pause_length,
+                next_fetch: row.next_fetch
+            });
+        });
+        resolve(lastFive);
+    });
+  });
 };
 
 export {getWordsSelection, processAnswers, addWord, deleteWord};
